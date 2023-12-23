@@ -6,4 +6,4 @@ if (empty($localStorage->get('jwt'))) {
     header('Location: ' . PUBLIC_URL . 'localStorage.php?action=get&name=jwt');
 }
 
-echo 'Already logged in: ' . $localStorage->get('jwt');
+echo 'Logged in: ' . $localStorage->get('jwt');

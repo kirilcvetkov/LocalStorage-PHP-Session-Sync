@@ -13,6 +13,10 @@ class LocalStorage
 
     public function set(string $name, $value)
     {
+        if ($value === 'null') {
+            return;
+        }
+
         return $_SESSION[$this->sessionVar][$name] = $value;
     }
 

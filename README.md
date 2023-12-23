@@ -1,14 +1,10 @@
 # PHP-LocalStorage-API
-Retrieve LocalStorage data from PHP
+Retrieve browser's LocalStorage data into PHP's session
 
-/login.php
+This a mock page that needs to retrieve a JWT from the browser in order to check if the app is authenticated.
+The issue I faced is sync-ing login information in a multi-platform setup.
+When having a front-end platform which handles the login process but there's a need to sync it with a back-end PHP platform, this is a way to do it.
 
-1. check if logged in already
-    $jwt = (new LocalStorage())->get('jwt');
-
-    a) start session - land on index.php
-    b) execute JS fetch call to transfer the JWT to setSession - redirect to checkLocalStorage.php (which makes a call to setSession.php)
-    c) check if logged in - redirect back to login.php
-
-2. if not, ask for login
-
+1. index.php - start the session
+2. redirect to localStorage.php (which makes a call to setSession.php) - executes JS fetch call to transfer the JWT to the PHP Session
+3. redirect back to login.php - check if logged in
