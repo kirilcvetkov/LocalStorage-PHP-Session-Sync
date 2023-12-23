@@ -11,9 +11,14 @@ needs to be shared between a front-end platform handling the login process and a
 The primary use case for LocalStorage-PHP-Session-Sync involves retrieving a JWT (JSON Web Token) stored in the browser's Local Storage and
 transferring it to the PHP Session. This process ensures authentication synchronization across different platforms.
 
-1. index.php - start the session
-2. make a JavaScript fetch call to setSession.php - transfers the JWT to the PHP Session
-3. redirect back to login.php - check if logged in
+1. Land on `index.php` and start the session
+2. If logged in, do nothing
+3. If not, make a JS `fetch()` call to `setSession.php` which transfers the JWT to the PHP Session
+    - I've implemented a basic authentication for this script
+4. Redirect to `login.php`
+    - if logged in, redirect to `index.php`
+    - if not, present login form
+5. Clicking on the login button, mocks-up authentication and redirects to `index.php`
 
 ## File Description
 
@@ -27,6 +32,6 @@ Singleton.php - basic singleton pattern class
 
 public/index.php - mock-up index page
 
-public/login.php
+public/login.php - mock-up login page
 
-public/setSession.php
+public/setSession.php - syncstores LocalStorage va
