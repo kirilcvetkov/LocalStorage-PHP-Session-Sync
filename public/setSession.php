@@ -2,11 +2,11 @@
 
 require_once '../app.php';
 
-if (empty($_GET['security']) || ! $security->check($_GET['security'])) {
+if (empty($_GET['auth']) || ! SetSessionAuth::getInstance()->validate($_GET['auth'])) {
     exit('Unauthorized');
 }
 
-$localStorage->set(
+LocalStorageSession::getInstance()->set(
     $_GET['name'] ?? null,
     $_GET['value'] ?? null
 );

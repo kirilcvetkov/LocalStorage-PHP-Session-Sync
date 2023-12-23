@@ -3,10 +3,9 @@
 session_start();
 
 define('PUBLIC_URL', 'http://localhost/PHP-LocalStorage-API/public/');
-define('LOG_FOLDER', '/Users/kirilcvetkov/www/PHP-LocalStorage-API/');
+define('TOKEN_NAME', 'jwt');
+define('TOKEN_VALUE', session_id());
 
-require_once '../Security.php';
-require_once '../LocalStorage.php';
-
-$security = new Security();
-$localStorage = new LocalStorage();
+require_once 'Singleton.php';
+require_once 'SetSessionAuth.php';
+require_once 'LocalStorageSession.php';

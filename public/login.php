@@ -2,12 +2,12 @@
 
 require_once '../app.php';
 
-if (! empty($localStorage->get('jwt'))) {
+if (! empty(LocalStorageSession::getInstance()->get(TOKEN_NAME))) {
     header('Location: ' . PUBLIC_URL);
 }
 
 if ($_GET['setup'] ?? null) {
-    header('Location: ' . PUBLIC_URL . 'localStorage.php?action=set&name=jwt&value=' . session_id());
+    header('Location: ' . PUBLIC_URL . 'index.php?action=set');
 }
 ?>
 
