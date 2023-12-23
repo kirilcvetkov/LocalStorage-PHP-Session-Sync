@@ -1,7 +1,8 @@
 <?php
-require_once 'index.php';
 
-$name = $_GET['name'] ?? null;
-$value = $_GET['value'] ?? null;
+require_once '../app.php';
 
-$_SESSION['localStorage'][$name] = $value;
+$localStorage->set(
+    $_GET['name'] ?? null,
+    $_GET['value'] ?? null
+);

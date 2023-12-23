@@ -2,41 +2,22 @@
 
 class LocalStorage
 {
-    private function call($action, $name, $value = null)
+    public function __construct(public string $sessionVar = 'localStorage')
     {
-        return file_get_contents(PUBLIC_URL . 'localStorage.php?' . http_build_query([
-            'action' => $action,
-            'name' => $name,
-            'value' => $value,
-        ]));
     }
 
     public function get(string $name)
     {
-        $this->call(__FUNCTION__, $name);
-
-        return $_SESSION['localStorage'][$name] ?? null;
+        return $_SESSION[$this->sessionVar][$name] ?? null;
     }
 
     public function set(string $name, $value)
     {
-        if (is_array($value) || is_object($value)) {
-            $value = json_encode($value);
-        }
-
-        $this->call(__FUNCTION__, $name, $value);
-
-        return true;
+        return $_SESSION[$this->sessionVar][$name] = $value;
     }
 
-    public function delete(string $name, $value)
+    public function delete(string $name)
     {
-        if (is_array($value) || is_object($value)) {
-            $value = json_encode($value);
-        }
-
-        $this->call(__FUNCTION__, $name);
-
-        return true;
+        unset($_SESSION[$this->sessionVar][$name]);
     }
 }

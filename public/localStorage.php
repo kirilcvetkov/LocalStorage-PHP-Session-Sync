@@ -1,13 +1,17 @@
 <script>
 <?php
-require_once 'index.php';
+require_once '../app.php';
 
 $name = $_GET['name'] ?? null;
 $value = $_GET['value'] ?? null;
 
 switch ($_GET['action'] ?? null) {
     case 'get':
-        echo 'let item = window.localStorage.getItem("' . $name . '")';
+        echo '
+            let value = window.localStorage.getItem("' . $name . '");
+            fetch(\'' . PUBLIC_URL . 'setSession.php?name=' . $name . '&value=\' + value)
+                .then((response) => console.log);
+        ';
         break;
 
     case 'set':
@@ -16,10 +20,5 @@ switch ($_GET['action'] ?? null) {
 }
 ?>
 
-fetch('<?= PUBLIC_URL ?>setSession.php?name=<?= $name ?>&value=<?= $value ?? null ?>')
-.then((response) => console.log);
-
-// window.localStorage.removeItem();
-// window.localStorage.clear();
-// window.localStorage.key();
+window.location.href = '<?= PUBLIC_URL ?>login.php'
 </script>
