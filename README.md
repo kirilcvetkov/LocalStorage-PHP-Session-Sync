@@ -1,8 +1,8 @@
-# PHP LocalStorage API
+# Browser's LocalStorage to PHP
 
 ## Introduction
 
-PHP LocalStorage API is a simple utility that facilitates the seamless retrieval of browser LocalStorage data into PHP sessions. This package is designed to address synchronization challenges in a multi-platform setup, where login information needs to be shared between a front-end platform handling the login process and a back-end PHP platform.
+Browser's LocalStorage to PHP is a simple utility that facilitates the seamless retrieval of browser LocalStorage data into PHP sessions. This package is designed to address synchronization challenges in a multi-platform setup, where login information needs to be shared between a front-end platform handling the login process and a back-end PHP platform.
 
 ## How It Works
 
