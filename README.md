@@ -18,9 +18,15 @@ transferring it to the PHP Session. This process ensures authentication synchron
 ## File Description
 
 app.php - bootstrap for the app
+
 LocalStorageSession.php - a simple class managing the LocalStorage data saved in the Session
+
 SetSessionAuth.php - simple security for the public/setSession.php script
+
+Singleton.php - basic singleton pattern class
+
 public/index.php - mock-up index page
-public/localStorage.php - 
+
 public/login.php
+
 public/setSession.php
