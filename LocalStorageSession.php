@@ -22,4 +22,9 @@ class LocalStorageSession extends Singleton
     {
         unset($_SESSION[$this->sessionArray][$name]);
     }
+
+    public function destroy()
+    {
+        unset($_SESSION[$this->sessionArray]);
+    }
 }
