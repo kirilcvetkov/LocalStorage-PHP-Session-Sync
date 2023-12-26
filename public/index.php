@@ -101,9 +101,9 @@ if (empty($token)) {
     <main class="container">
       <div class="bg-body-tertiary p-5 rounded">
         <h1>You're logged in</h1>
-        <p><h6 class="py-2">Token value <span class="badge bg-secondary"><?= $token ?></span></h6></p>
-        <a class="btn btn-lg btn-primary" href="login.php?logout=1" role="button">Logout</a>
-        <a class="btn btn-lg btn-primary" href="https://github.com/kirilcvetkov/LocalStorage-PHP-Session-Sync" role="button" target="_blank">
+        <p><h6 class="py-2">Value from LocalStorage <span class="badge bg-secondary"><?= $token ?></span></h6></p>
+        <a class="btn btn-primary" href="login.php?logout=1" role="button">Logout</a>
+        <a class="btn btn-secondary" href="https://github.com/kirilcvetkov/LocalStorage-PHP-Session-Sync" role="button" target="_blank">
           Source at GitHub 🔗
         </a>
       </div>
@@ -111,7 +111,10 @@ if (empty($token)) {
 
     <footer class="footer mt-auto bg-body-tertiary">
       <div class="container">
-        <span class="text-muted">&copy; Copyright SlickSky.com 2023. All Rights Reserved.</span>
+        <span class="text-muted">
+          &copy; SlickSky.com 2023.
+          <a href="https://github.com/kirilcvetkov/LocalStorage-PHP-Session-Sync" role="button" target="_blank">GitHub Source</a>
+        </span>
       </div>
     </footer>
 

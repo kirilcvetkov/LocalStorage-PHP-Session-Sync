@@ -101,7 +101,16 @@ if ($_GET['logout'] ?? null) {
         <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
       </form>
     </main>
-    <script src="js/bootstrap.bundle.min.js"></script>
 
+    <footer class="footer mt-auto bg-body-tertiary">
+      <div class="container">
+        <span class="text-muted">
+          &copy; SlickSky.com 2023.
+          <a href="https://github.com/kirilcvetkov/LocalStorage-PHP-Session-Sync" role="button" target="_blank">GitHub Source</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
