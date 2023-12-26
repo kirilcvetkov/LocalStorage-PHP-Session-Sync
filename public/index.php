@@ -89,7 +89,7 @@ if (empty($token)) {
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <ul class="navbar-nav ms-auto mb-2 mb-md-0">
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="login.php?logout=1">Logout</a>
             </li>
@@ -101,10 +101,20 @@ if (empty($token)) {
     <main class="container">
       <div class="bg-body-tertiary p-5 rounded">
         <h1>You're logged in</h1>
-        <h6 class="py-2">Token value <span class="badge bg-secondary"><?= $token ?></span></h6></p>
+        <p><h6 class="py-2">Token value <span class="badge bg-secondary"><?= $token ?></span></h6></p>
         <a class="btn btn-lg btn-primary" href="login.php?logout=1" role="button">Logout</a>
+        <a class="btn btn-lg btn-primary" href="https://github.com/kirilcvetkov/LocalStorage-PHP-Session-Sync" role="button" target="_blank">
+          Source at GitHub 🔗
+        </a>
       </div>
     </main>
+
+    <footer class="footer mt-auto bg-body-tertiary">
+      <div class="container">
+        <span class="text-muted">&copy; Copyright SlickSky.com 2023. All Rights Reserved.</span>
+      </div>
+    </footer>
+
     <script src="js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
