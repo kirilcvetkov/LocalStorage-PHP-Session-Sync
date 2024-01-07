@@ -12,7 +12,7 @@ The primary use case for LocalStorage-PHP-Session-Sync involves retrieving a JWT
 transferring it to the PHP Session. This process ensures authentication synchronization across different platforms.
 
 1. Land on `index.php` and start the session
-2. If logged in, do nothing
+2. If logged in, display JWT from LocalStorage
 3. If not, make a JS `fetch()` call to `setSession.php` which transfers the JWT to the PHP Session
     - I've implemented a basic authentication for this script
 4. Redirect to `login.php`

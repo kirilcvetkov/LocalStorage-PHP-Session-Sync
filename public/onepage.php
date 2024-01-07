@@ -86,20 +86,21 @@ if ($_GET['logout'] ?? null) {
     </div>
 
     <main class="form-signin w-100 m-auto">
-      <form method="POST" action="login.php?login=1">
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-
-        <div class="form-floating">
-          <input type="email" class="form-control" id="floatingInput" value="name@example.com" disabled>
-          <label for="floatingInput">Email address</label>
-        </div>
-        <div class="form-floating">
-          <input type="password" class="form-control" id="floatingPassword" value="Password" disabled>
-          <label for="floatingPassword">Password</label>
-        </div>
-
-        <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
-      </form>
+      <h1 class="text-nowrap">LocalStorage - PHP Session Sync</h1>
+      <ol>
+        <li>
+          Does _SESSION have JWT? <?= LocalStorageSession::getInstance()->get(TOKEN_NAME) ? 'Yes' : 'No' ?>
+        </li>
+        <li>
+          Does LocalStorage have JWT? <span id="localstorage-has-jwt"></span>
+          <a href="#" id="localstorage-has-jwt-check">Check</a>
+          <a href="#" id="localstorage-has-jwt-set" style="display: none;">Set random JWT value in LocalStorage</a>
+        </li>
+        <li>
+          Are LocalStorate and _SESSION in-sync: <span id="localstorage-php-syncd"></span>
+          <a href="#" onClick="checkSync(); return false;">Check</a>
+        </li>
+      </ol>
     </main>
 
     <footer class="footer mt-auto bg-body-tertiary">
@@ -112,5 +113,66 @@ if ($_GET['logout'] ?? null) {
     </footer>
 
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+      function checkLocalStorageJwt() {
+        let jwt = window.localStorage.getItem('<?= TOKEN_NAME ?>');
+        console.log('<?= TOKEN_NAME ?>', {jwt})
+        document.getElementById('localstorage-has-jwt').innerHTML = jwt || 'No';
+
+        if (! jwt) {
+          
+        }
+      }
+      checkLocalStorageJwt();
+      document.getElementById('localstorage-has-jwt-check').addEventListener('click', checkLocalStorageJwt, false);
+
+      function setLocalStorageJwt() {
+        let jwt = '<?= TOKEN_VALUE ?>';
+        window.localStorage.setItem('<?= TOKEN_NAME ?>', jwt);
+        console.log('<?= TOKEN_NAME ?>', {jwt})
+        document.getElementById('localstorage-has-jwt').innerHTML = jwt || 'No';
+        checkLocalStorageJwt();
+      }
+      document.getElementById('localstorage-has-jwt-set').addEventListener('click', setLocalStorageJwt, false);
+
+      function checkSync() {
+        let token = window.localStorage.getItem('<?= TOKEN_NAME ?>') || null;
+
+        if (! token) {
+          alert('no token');
+
+          return false;
+        }
+
+        let data = {
+          name: '<?= TOKEN_NAME ?>',
+          value: token,
+          auth: '<?= SetSessionAuth::getInstance()->get() ?>',
+        };
+        postData('<?= PUBLIC_URL ?>setSession.php', data)
+            .then((response) => console.log);
+        // window.location.href = '<?= PUBLIC_URL ?>login.php';
+        //localstorage-php-syncd
+      }
+
+      // Example POST method implementation:
+      async function postData(url = '', data = {}) {
+        // Default options are marked with *
+        const response = await fetch(url, {
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin', // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          redirect: "follow", // manual, *follow, error
+          referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify(data), // body data type must match "Content-Type" header
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+      }
+    </script>
   </body>
 </html>

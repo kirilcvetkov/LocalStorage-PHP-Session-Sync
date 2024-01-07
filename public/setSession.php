@@ -2,11 +2,13 @@
 
 require_once '../app.php';
 
-if (empty($_GET['auth']) || ! SetSessionAuth::getInstance()->validate($_GET['auth'])) {
+$json = json_decode(file_get_contents('php://input'), true);
+
+if (empty($json['auth']) || ! SetSessionAuth::getInstance()->validate($json['auth'])) {
     exit('Unauthorized');
 }
 
 LocalStorageSession::getInstance()->set(
-    $_GET['name'] ?? null,
-    $_GET['value'] ?? null
+    $json['name'] ?? null,
+    $json['value'] ?? null
 );
