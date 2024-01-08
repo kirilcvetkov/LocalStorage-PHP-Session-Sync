@@ -2,21 +2,7 @@
 
 require_once '../app.php';
 
-if ($_GET['logout'] ?? null) {
-    session_destroy();
-    LocalStorageSession::getInstance()->destroy();
-} elseif (! empty(LocalStorageSession::getInstance()->get(TOKEN_NAME))) {
-    header('Location: ' . PUBLIC_URL);
-} elseif ($_GET['login'] ?? null) {
-    exit('
-<script>
-  window.localStorage.setItem("' . TOKEN_NAME . '", "' . TOKEN_VALUE . '");
-  window.location.href = \'' . PUBLIC_URL . '\';
-</script>
-    ');
-}
 ?>
-
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <head>
@@ -46,8 +32,11 @@ if ($_GET['logout'] ?? null) {
         <li>
           Are LocalStorate and _SESSION in-sync?
           <span class="badge" id="localstorage-php-jwt"></span>
-          <span class="badge" id="localstorage-php-syncd"></span>
-          <a href="#" onClick="sync(); return false;">Sync</a>
+          <a id="localstorage-php-jwt-sync" href="#" onClick="sync(); return false;">Sync</a>
+        </li>
+        <li>
+          Reset LocalStorage and PHP _SESSION
+          <a id="localstorage-php-jwt-reset" href="#" onClick="reset(); return false;">Reset</a>
         </li>
       </ol>
     </main>
@@ -70,7 +59,7 @@ if ($_GET['logout'] ?? null) {
 
       function checkLocalStorageJwt()
       {
-        let jwt = window.localStorage.getItem('<?= TOKEN_NAME ?>');
+        let jwt = getJwtFromLocalStorage();
         document.getElementById('localstorage-has-jwt').innerHTML = jwt ? 'Yes' : 'No';
         document.getElementById('localstorage-jwt').innerHTML = jwt;
         document.getElementById('localstorage-has-jwt').className = jwt ? 'badge text-bg-success' : 'badge text-bg-danger';
@@ -101,15 +90,13 @@ if ($_GET['logout'] ?? null) {
         let syncd = localStorageJwt === sessionJwt;
 
         document.getElementById('localstorage-php-jwt').innerHTML = syncd ? 'Yes' : 'No';
-        document.getElementById('localstorage-php-syncd').innerHTML = '"' + localStorageJwt + ' === ' + sessionJwt + '"';
         document.getElementById('localstorage-php-jwt').className = syncd ? 'badge text-bg-success' : 'badge text-bg-danger';
-        document.getElementById('localstorage-php-syncd').className = syncd ? 'badge text-bg-success' : 'badge text-bg-danger';
       }
       checkSync();
 
       function sync()
       {
-        let jwt = window.localStorage.getItem('<?= TOKEN_NAME ?>') || null;
+        let jwt = getJwtFromLocalStorage();
 
         if (! jwt) {
           alert('no token');
@@ -117,14 +104,25 @@ if ($_GET['logout'] ?? null) {
           return false;
         }
 
-        let data = {
-          name: '<?= TOKEN_NAME ?>',
-          value: jwt,
-          auth: '<?= SetSessionAuth::getInstance()->get() ?>',
-        };
-        postData('<?= PUBLIC_URL ?>setSession.php', data)
-            .then((response) => console.log);
+        postData(
+          '<?= PUBLIC_URL ?>setSessionVar.php',
+          {
+            name: '<?= TOKEN_NAME ?>',
+            value: jwt,
+            auth: '<?= SetSessionAuth::getInstance()->get() ?>',
+          }
+        )
+        .then((response) => {
+          console.log({response});
+          window.location.href = '<?= PUBLIC_URL ?>onepage.php';
+        });
       }
+
+      function reset()
+      {
+
+      }
+      document.getElementById('localstorage-php-jwt-reset').addEventListener('click', reset, false);
 
       // Example POST method implementation:
       async function postData(url = '', data = {}) {

@@ -8,7 +8,11 @@ if (empty($json['auth']) || ! SetSessionAuth::getInstance()->validate($json['aut
     exit('Unauthorized');
 }
 
-LocalStorageSession::getInstance()->set(
+$set = LocalStorageSession::getInstance()->set(
     $json['name'] ?? null,
     $json['value'] ?? null
 );
+
+if ($set) {
+    exit(json_encode(['value']));
+}
