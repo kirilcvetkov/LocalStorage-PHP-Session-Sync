@@ -15,7 +15,7 @@ class LocalStorageSession extends Singleton
             return;
         }
 
-        return $_SESSION[$this->sessionArray][$name] = $value;
+        $_SESSION[$this->sessionArray][$name] = $value;
     }
 
     public function delete(string $name)

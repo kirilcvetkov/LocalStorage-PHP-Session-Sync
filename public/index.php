@@ -2,111 +2,57 @@
 
 require_once '../app.php';
 
-$token = LocalStorageSession::getInstance()->get(TOKEN_NAME);
+$sessionApiScript = 'sessionApi.php';
+$sessionApiUrl = PUBLIC_URL . $sessionApiScript;
 
-if (empty($token)) {
-    exit('
-<script>
-    let value = window.localStorage.getItem("' . TOKEN_NAME . '") || "";
-    fetch(\'' . PUBLIC_URL . 'setSession.php?name=' . TOKEN_NAME . '&value=\' + value + \'&auth=' . SetSessionAuth::getInstance()->get() . '\')
-        .then((response) => console.log);
-    window.location.href = \'' . PUBLIC_URL . 'login.php\';
-</script>
-    ');
-}
 ?>
-
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.118.2">
-    <title>Fixed top navbar example · Bootstrap v5.3</title>
+    <title></title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/navbar-fixed.css" rel="stylesheet">
     <script src="js/color-modes.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="css/sign-in.css" rel="stylesheet">
   </head>
-  <body>
-    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-      <symbol id="check2" viewBox="0 0 16 16">
-        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-      </symbol>
-      <symbol id="circle-half" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
-      </symbol>
-      <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
-        <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
-      </symbol>
-      <symbol id="sun-fill" viewBox="0 0 16 16">
-        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
-      </symbol>
-    </svg>
-
-    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-      <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
-          id="bd-theme"
-          type="button"
-          aria-expanded="false"
-          data-bs-toggle="dropdown"
-          aria-label="Toggle theme (auto)">
-        <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
-        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-            <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#sun-fill"></use></svg>
-            Light
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
+  <body class="d-flex align-items-center py-4 bg-body-tertiary">
+    <main class="form-signin w-100 m-auto">
+      <h1 class="text-nowrap pb-5">LocalStorage to PHP Session Sync</h1>
+      <ol class="list-group list-group-flush">
+        <li class="list-group-item py-3 px-4">
+          1. What's the variable name to be sync'd?
+          <div class="small text-muted">Name <span class="badge text-bg-primary"><?= TOKEN_NAME ?></span></div>
+          <div class="small text-muted">Value <span class="badge text-bg-success"><?= TOKEN_VALUE ?></span></div>
+          <div class="small text-muted">
+            You can set the variable name and value in the <b>app.php</b> script
+            using the <span class="badge text-bg-secondary">TOKEN_NAME</span>
+            and <span class="badge text-bg-secondary">TOKEN_VALUE</span> constants, respectively.
+          </div>
         </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-            <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
-            Dark
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
+        <li class="list-group-item py-3 px-4">
+          2. Does LocalStorage have the <span class="badge text-bg-primary"><?= TOKEN_NAME ?></span> value?
+          <span class="badge" id="localstorage-has-jwt"></span>
+          <a href="#" id="localstorage-has-jwt-set" class="btn btn-success btn-sm ms-4" style="display: none;">Set random value</a>
+          <div class="small text-muted">Value <span class="badge" id="localstorage-jwt"></span></div>
         </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
-            <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#circle-half"></use></svg>
-            Auto
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
+        <li class="list-group-item py-3 px-4">
+          3. Are LocalStorage and PHP $_SESSION in-sync?
+          <span class="badge" id="localstorage-php-jwt"></span>
+          <a id="localstorage-php-jwt-sync" class="btn btn-primary btn-sm ms-4" role="button" href="#" onClick="sync(); return false;">Sync</a>
+          <div class="small text-muted">
+            Sync does a POST call to <span class="badge text-bg-secondary"><?= $sessionApiScript ?></span> with the <span class="badge text-bg-primary"><?= TOKEN_NAME ?></span> value, which saves it into the $_SESSION for PHP to use.
+          </div>
         </li>
-      </ul>
-    </div>
-
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Home</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="login.php?logout=1">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <main class="container">
-      <div class="bg-body-tertiary p-5 rounded">
-        <h1>You're logged in</h1>
-        <p><h6 class="py-2">Value from LocalStorage <span class="badge bg-secondary"><?= $token ?></span></h6></p>
-        <a class="btn btn-primary" href="login.php?logout=1" role="button">Logout</a>
-        <a class="btn btn-secondary" href="https://github.com/kirilcvetkov/LocalStorage-PHP-Session-Sync" role="button" target="_blank">
-          Source at GitHub 🔗
-        </a>
-      </div>
+        <li class="list-group-item py-3 px-4">
+          4. Reset LocalStorage and PHP $_SESSION
+          <a id="localstorage-php-jwt-reset" class="btn btn-danger btn-sm ms-4" role="button" href="#" onClick="reset(); return false;">Reset</a>
+        </li>
+      </ol>
     </main>
 
     <footer class="footer mt-auto bg-body-tertiary">
@@ -119,5 +65,105 @@ if (empty($token)) {
     </footer>
 
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+      function getJwtFromLocalStorage()
+      {
+        return window.localStorage.getItem('<?= TOKEN_NAME ?>') || null;
+      }
+
+      function checkLocalStorageJwt()
+      {
+        let jwt = getJwtFromLocalStorage();
+
+        document.getElementById('localstorage-has-jwt').innerHTML = jwt ? 'Yes' : 'No';
+        document.getElementById('localstorage-jwt').innerHTML = jwt;
+        document.getElementById('localstorage-has-jwt').className = jwt ? 'badge text-bg-success' : 'badge text-bg-danger';
+        document.getElementById('localstorage-jwt').className = jwt ? 'badge text-bg-success' : 'badge text-bg-danger';
+        document.getElementById('localstorage-has-jwt-set').style = jwt ? 'display: none' : '';
+      }
+
+      checkLocalStorageJwt();
+
+      function setLocalStorageJwt()
+      {
+        let jwt = '<?= TOKEN_VALUE ?>';
+        window.localStorage.setItem('<?= TOKEN_NAME ?>', jwt);
+        checkLocalStorageJwt();
+      }
+
+      document.getElementById('localstorage-has-jwt-set').addEventListener('click', setLocalStorageJwt, false);
+
+      function checkSync()
+      {
+        let syncd = getJwtFromLocalStorage() === '<?= LocalStorageSession::getInstance()->get(TOKEN_NAME) ?>';
+
+        document.getElementById('localstorage-php-jwt').innerHTML = syncd ? 'Yes' : 'No';
+        document.getElementById('localstorage-php-jwt').className = syncd ? 'badge text-bg-success' : 'badge text-bg-danger';
+        document.getElementById('localstorage-php-jwt-reset').style = syncd ? '' : 'display: none';
+      }
+
+      checkSync();
+
+      function sync()
+      {
+        let jwt = getJwtFromLocalStorage();
+
+        if (! jwt) {
+          alert('no token');
+
+          return false;
+        }
+
+        postData(
+          '<?= $sessionApiUrl ?>',
+          {
+            auth: '<?= SetSessionAuth::getInstance()->get() ?>',
+            action: 'set',
+            name: '<?= TOKEN_NAME ?>',
+            value: jwt,
+          }
+        )
+        .then((response) => {
+          console.log({response});
+          window.location.href = '<?= PUBLIC_URL ?>index.php';
+        });
+      }
+
+      function reset()
+      {
+        window.localStorage.removeItem('<?= TOKEN_NAME ?>');
+
+        postData(
+          '<?= $sessionApiUrl ?>',
+          {
+            auth: '<?= SetSessionAuth::getInstance()->get() ?>',
+            action: 'delete',
+            name: '<?= TOKEN_NAME ?>',
+          }
+        )
+        .then((response) => {
+          console.log({response});
+          window.location.href = '<?= PUBLIC_URL ?>index.php';
+        });
+      }
+
+      document.getElementById('localstorage-php-jwt-reset').addEventListener('click', reset, false);
+
+      async function postData(url = '', data = {})
+      {
+        const response = await fetch(url, {
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin', // include, *same-origin, omit
+          headers: {"Content-Type": "application/json"},
+          redirect: "follow", // manual, *follow, error
+          referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify(data), // body data type must match "Content-Type" header
+        });
+
+        return response.json(); // parses JSON response into native JavaScript objects
+      }
+    </script>
   </body>
 </html>
