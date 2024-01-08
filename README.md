@@ -13,7 +13,7 @@ transferring it to the PHP Session. This process ensures authentication synchron
 
 1. Land on `index.php` and start the session
 2. If logged in, display JWT from LocalStorage
-3. If not, make a JS `fetch()` call to `setSession.php` which transfers the JWT to the PHP Session
+3. If not, make a JS `fetch()` call to `setSessionVar.php` which transfers the JWT to the PHP Session
     - I've implemented a basic authentication for this script
 4. Redirect to `login.php`
     - if logged in, redirect to `index.php`
